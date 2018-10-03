@@ -29,9 +29,9 @@ namespace KatlaSport.WebApi.Controllers
         [Route("")]
         [SwaggerResponse(HttpStatusCode.OK, Description = "Returns a list of hive sections.", Type = typeof(HiveSectionListItem[]))]
         [SwaggerResponse(HttpStatusCode.InternalServerError)]
-        public IHttpActionResult GetHiveSections()
+        public async Task<IHttpActionResult> GetHiveSections()
         {
-            var hives = _hiveSectionService.GetHiveSectionsAsync();
+            var hives = await _hiveSectionService.GetHiveSectionsAsync();
             return Ok(hives);
         }
 
