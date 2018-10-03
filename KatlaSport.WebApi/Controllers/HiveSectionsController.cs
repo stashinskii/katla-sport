@@ -40,9 +40,9 @@ namespace KatlaSport.WebApi.Controllers
         [SwaggerResponse(HttpStatusCode.OK, Description = "Returns a hive section.", Type = typeof(HiveSection))]
         [SwaggerResponse(HttpStatusCode.NotFound)]
         [SwaggerResponse(HttpStatusCode.InternalServerError)]
-        public IHttpActionResult GetHiveSection(int hiveSectionId)
+        public async Task<IHttpActionResult> GetHiveSection(int hiveSectionId)
         {
-            var hive = _hiveSectionService.GetHiveSectionAsync(hiveSectionId);
+            var hive = await _hiveSectionService.GetHiveSectionAsync(hiveSectionId);
             return Ok(hive);
         }
 
