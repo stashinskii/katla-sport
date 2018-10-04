@@ -14,6 +14,7 @@ export class HiveService {
 
   constructor(private http: HttpClient) { }
 
+  
   getHives(): Observable<Array<HiveListItem>> {
     return this.http.get<Array<HiveListItem>>(this.url);
   }
@@ -23,7 +24,7 @@ export class HiveService {
   }
 
   getHiveSections(hiveId: number): Observable<Array<HiveSectionListItem>> {
-    return null;
+    return this.http.get<Array<HiveSectionListItem>>(`${this.url}${hiveId}/sections`);
   }
 
   addHive(hive: Hive): Observable<Hive> {
