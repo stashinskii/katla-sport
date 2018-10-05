@@ -120,7 +120,21 @@ namespace KatlaSport.Services.HiveManagement
         /// <inheritdoc/>
         public async Task SetStatusAsync(int hiveId, bool deletedStatus)
         {
-            throw new NotImplementedException();
+            var storeHives = await _context.Hives.Where(c => hiveId == c.Id).ToArrayAsync();
+
+            if (storeHives.Length == 0)
+            {
+                throw new RequestedResourceNotFoundException();
+            }
+
+            var storeHive = storeHives[0];
+            if (storeHive.IsDeleted != deletedStatus)
+            {
+                storeHive.IsDeleted = deletedStatus;
+                storeHive.LastUpdated = DateTime.UtcNow;
+                storeHive.LastUpdatedBy = _userContext.UserId;
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

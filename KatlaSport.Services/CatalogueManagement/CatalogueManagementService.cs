@@ -5,8 +5,14 @@ using KatlaSport.DataAccess.ProductCatalogue;
 
 namespace KatlaSport.Services.CatalogueManagement
 {
+    /// <summary>
+    /// Represents service for managing products and its categories
+    /// </summary>
     internal class CatalogueManagementService : ICatalogueManagementService
     {
+        /// <summary>
+        /// Represents context to get access to tables of Catalogues and Products
+        /// </summary>
         private readonly IProductCatalogueContext _catalogueContext;
 
         public CatalogueManagementService(IProductCatalogueContext catalogueContext)
@@ -14,6 +20,10 @@ namespace KatlaSport.Services.CatalogueManagement
             _catalogueContext = catalogueContext ?? throw new ArgumentNullException(nameof(catalogueContext));
         }
 
+        /// <summary>
+        /// Get all provided categories of products
+        /// </summary>
+        /// <returns>Returns collection of categories</returns>
         public IList<Category> GetProductCategories()
         {
             var categories = _catalogueContext.Categories.ToArray();
@@ -25,6 +35,9 @@ namespace KatlaSport.Services.CatalogueManagement
             }).ToList();
         }
 
+        /// <summary>
+        /// Add new product category
+        /// </summary>
         public void AddProductCategory()
         {
         }
