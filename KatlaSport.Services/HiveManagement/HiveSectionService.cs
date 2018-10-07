@@ -91,5 +91,67 @@ namespace KatlaSport.Services.HiveManagement
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<HiveSection> CreateHiveSectionAsync(UpdateHiveSectionRequest createRequest)
+        {
+            var dbHiveSections = await _context.Sections.Where(h => h.Code == createRequest.Code).ToArrayAsync();
+            if (dbHiveSections.Length > 0)
+            {
+                throw new RequestedResourceHasConflictException("code");
+            }
+
+            var dbHive = Mapper.Map<UpdateHiveSectionRequest, DbHiveSection>(createRequest);
+            dbHive.CreatedBy = _userContext.UserId;
+            dbHive.LastUpdatedBy = _userContext.UserId;
+            _context.Sections.Add(dbHive);
+
+            await _context.SaveChangesAsync();
+
+            return Mapper.Map<HiveSection>(dbHive);
+        }
+
+        /// <inheritdoc/>
+        public async Task<HiveSection> UpdateHiveSectionAsync(int hiveId, UpdateHiveSectionRequest updateRequest)
+        {
+            var dbHives = _context.Sections.Where(p => p.Code == updateRequest.Code && p.Id != hiveId).ToArray();
+            if (dbHives.Length > 0)
+            {
+                throw new RequestedResourceHasConflictException("code");
+            }
+
+            dbHives = await _context.Sections.Where(p => p.Id == hiveId).ToArrayAsync();
+            if (dbHives.Length == 0)
+            {
+                throw new RequestedResourceNotFoundException();
+            }
+
+            var dbHive = dbHives[0];
+
+            Mapper.Map(updateRequest, dbHive);
+            dbHive.LastUpdatedBy = _userContext.UserId;
+
+            await _context.SaveChangesAsync();
+
+            return Mapper.Map<HiveSection>(dbHive);
+        }
+
+        /// <inheritdoc/>
+        public async Task DeleteHiveSectionAsync(int hiveId)
+        {
+            var dbHives = await _context.Sections.Where(p => p.Id == hiveId).ToArrayAsync();
+            if (dbHives.Length == 0)
+            {
+                throw new RequestedResourceNotFoundException();
+            }
+
+            var dbHive = dbHives[0];
+            if (dbHive.IsDeleted == false)
+            {
+                throw new RequestedResourceHasConflictException();
+            }
+
+            _context.Sections.Remove(dbHive);
+            await _context.SaveChangesAsync();
+        }
     }
 }
