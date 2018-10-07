@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HiveService } from '../services/hive.service';
 import { Hive } from '../models/hive';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-hive-form',
@@ -36,14 +37,26 @@ export class HiveFormComponent implements OnInit {
   }
   
   onSubmit() {
+    if (this.existed) {
+      this.hiveService.updateHive(this.hive).subscribe(h => this.navigateToHives());
+    } else {
+      this.hiveService.addHive(this.hive).subscribe(h => this.navigateToHives());
+    }
   }
 
+
   onDelete() {
+    this.hiveService.setHiveStatus(this.hive.id, true).subscribe(h => this.hive.isDeleted = true);
+    //console.log(this.hive.isDeleted)
   }
 
   onUndelete() {
+    this.hiveService.setHiveStatus(this.hive.id, false).subscribe(h => this.hive.isDeleted = false);
+    //console.log(this.hive.isDeleted)
   }
 
   onPurge() {
+    //console.log(this.hive.id)
+    this.hiveService.deleteHive(this.hive.id).subscribe(h => this.navigateToHives());
   }
 }
