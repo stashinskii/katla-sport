@@ -37,7 +37,7 @@ namespace KatlaSport.DataAccess.Migrations
 
         protected override void Seed(ApplicationDbContext context)
         {
-            SeedDatabase(context);
+            //SeedDatabase(context);
         }
 
         [Conditional("DEBUG")]
