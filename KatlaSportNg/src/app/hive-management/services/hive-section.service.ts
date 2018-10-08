@@ -8,6 +8,7 @@ import { HiveSectionListItem } from '../models/hive-section-list-item';
 @Injectable({
   providedIn: 'root'
 })
+
 export class HiveSectionService {
   private url = environment.apiUrl + 'api/sections/';
 
@@ -23,5 +24,17 @@ export class HiveSectionService {
 
   setHiveSectionStatus(hiveId: number, deletedStatus: boolean): Observable<Object>{
     return this.http.put<Object>(`${this.url}${hiveId}/status/${deletedStatus}`, null);
+  }
+
+  addHiveSection(hiveSection: HiveSection): Observable<HiveSection>{
+    return this.http.post<HiveSection>(`${this.url}`, hiveSection);
+  }
+
+  updateHiveSection(hiveSection: HiveSection): Observable<HiveSection>{
+    return this.http.put<HiveSection>(`${this.url}${hiveSection.id}`, hiveSection);
+  }
+
+  deleteHiveSection(hiveSectionId: number): Observable<Object> {
+    return this.http.delete<Object>(`${this.url}${hiveSectionId}`);
   }
 }

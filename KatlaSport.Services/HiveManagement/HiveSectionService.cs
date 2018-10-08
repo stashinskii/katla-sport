@@ -92,6 +92,11 @@ namespace KatlaSport.Services.HiveManagement
             }
         }
 
+        /// <summary>
+        /// Create new hive section
+        /// </summary>
+        /// <param name="createRequest">Data provided from request</param>
+        /// <returns>Hive Section's information</returns>
         public async Task<HiveSection> CreateHiveSectionAsync(UpdateHiveSectionRequest createRequest)
         {
             var dbHiveSections = await _context.Sections.Where(h => h.Code == createRequest.Code).ToArrayAsync();
@@ -110,7 +115,12 @@ namespace KatlaSport.Services.HiveManagement
             return Mapper.Map<HiveSection>(dbHive);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Update existing hive section accoring to its id and data provided from request
+        /// </summary>
+        /// <param name="hiveId">Hive ID</param>
+        /// <param name="updateRequest">Data provided from request</param>
+        /// <returns>Hive Section's info</returns>
         public async Task<HiveSection> UpdateHiveSectionAsync(int hiveId, UpdateHiveSectionRequest updateRequest)
         {
             var dbHives = _context.Sections.Where(p => p.Code == updateRequest.Code && p.Id != hiveId).ToArray();
@@ -135,7 +145,11 @@ namespace KatlaSport.Services.HiveManagement
             return Mapper.Map<HiveSection>(dbHive);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Delete existing hive section according to its ID
+        /// </summary>
+        /// <param name="hiveId">Hive ID</param>
+        /// <returns>No data</returns>
         public async Task DeleteHiveSectionAsync(int hiveId)
         {
             var dbHives = await _context.Sections.Where(p => p.Id == hiveId).ToArrayAsync();
