@@ -25,7 +25,9 @@ const routes: Routes = [
   { path: 'hive', component: HiveFormComponent },
   { path: 'hive/:id', component: HiveFormComponent },
   { path: 'hive/:id/sections', component: HiveSectionListComponent },
-  { path: 'section/:id', component: HiveSectionFormComponent },
+  { path: 'hive/:id/section', component: HiveSectionFormComponent }, //for adding
+  { path: 'section/:storehiveId', component: HiveSectionFormComponent }, //for editing
+
 ];
 
 @NgModule({

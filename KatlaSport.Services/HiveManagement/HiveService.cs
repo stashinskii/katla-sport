@@ -28,7 +28,10 @@ namespace KatlaSport.Services.HiveManagement
             _userContext = userContext ?? throw new ArgumentNullException();
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns all provided hives
+        /// </summary>
+        /// <returns>List of Hives</returns>
         public async Task<List<HiveListItem>> GetHivesAsync()
         {
             var dbHives = await _context.Hives.OrderBy(h => h.Id).ToArrayAsync();
@@ -42,7 +45,11 @@ namespace KatlaSport.Services.HiveManagement
             return hives;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns hive according to its ID
+        /// </summary>
+        /// <param name="hiveId">ID for Hive element</param>
+        /// <returns>Hive instance</returns>
         public async Task<Hive> GetHiveAsync(int hiveId)
         {
             var dbHives = await _context.Hives.Where(h => h.Id == hiveId).ToArrayAsync();
@@ -54,7 +61,11 @@ namespace KatlaSport.Services.HiveManagement
             return Mapper.Map<DbHive, Hive>(dbHives[0]);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Create new hive
+        /// </summary>
+        /// <param name="createRequest">Data provided from request</param>
+        /// <returns>Hive's information</returns>
         public async Task<Hive> CreateHiveAsync(UpdateHiveRequest createRequest)
         {
             var dbHives = _context.Hives.Where(h => h.Code == createRequest.Code).ToArray();
@@ -73,7 +84,12 @@ namespace KatlaSport.Services.HiveManagement
             return Mapper.Map<Hive>(dbHive);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Update existing hive accoring to its id and data provided from request
+        /// </summary>
+        /// <param name="hiveId">Hive ID</param>
+        /// <param name="updateRequest">Data provided from request</param>
+        /// <returns>Hive's info</returns>
         public async Task<Hive> UpdateHiveAsync(int hiveId, UpdateHiveRequest updateRequest)
         {
             var dbHives = _context.Hives.Where(p => p.Code == updateRequest.Code && p.Id != hiveId).ToArray();
@@ -98,7 +114,11 @@ namespace KatlaSport.Services.HiveManagement
             return Mapper.Map<Hive>(dbHive);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Delete existing hive according to its ID
+        /// </summary>
+        /// <param name="hiveId">Hive ID</param>
+        /// <returns>No data</returns>
         public async Task DeleteHiveAsync(int hiveId)
         {
             var dbHives = await _context.Hives.Where(p => p.Id == hiveId).ToArrayAsync();
@@ -117,7 +137,12 @@ namespace KatlaSport.Services.HiveManagement
             await _context.SaveChangesAsync();
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Changes deletion status for hive according to its ID
+        /// </summary>
+        /// <param name="hiveId">Hive ID</param>
+        /// <param name="deletedStatus">Status for deletion</param>
+        /// <returns>No data</returns>
         public async Task SetStatusAsync(int hiveId, bool deletedStatus)
         {
             var storeHives = await _context.Hives.Where(c => hiveId == c.Id).ToArrayAsync();

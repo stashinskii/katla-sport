@@ -1,3 +1,45 @@
-<p>
-  hive-section-form works!
-</p>
+<div class="container">
+  <h2>Hive Section Editor</h2>
+  <form (ngSubmit)="onSubmit()" #hiveForm="ngForm">
+    <div class="form-group" *ngIf='existed'>
+      <label for="idLabel">ID</label>
+      <input type="text" class="form-control" id="id" aria-describedby="idLabel" [(ngModel)]="hiveSection.id" name="id" #id="ngModel"
+        readonly>
+      <label for="hiveidLabel">Hive ID</label>
+      <input type="text" class="form-control" id="id" aria-describedby="hiveidLabel" [(ngModel)]="hiveSection.storeHiveId" name="storeHiveId" #storeHiveId="ngModel"
+        readonly>
+    </div>
+    <div class="form-group">
+      <label for="name" id="nameLabel">Hive Name</label>
+      <input type="text" class="form-control" id="name" aria-describedby="nameLabel" minlength="4" maxlength="60" required [(ngModel)]="hiveSection.name"
+        name="name" #name="ngModel">
+      <label for="code" id="codeLabel">Hive code</label>
+      <input type="text" class="form-control" id="name" aria-describedby="codeLabel" minlength="5" maxlength="5" required [(ngModel)]="hiveSection.code"
+        name="code" #code="ngModel">
+      <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+        <div *ngIf="name.errors.required">Hive Name is required.</div>
+        <div *ngIf="name.errors.minlength">Hive Name must be at least 4 characters long.</div>
+      </div>
+    </div>
+    <div class="form-group" *ngIf='existed'>
+      <label for="lastUpdated" id="lastUpdatedLabel">Last Update</label>
+      <input type="text" class="form-control" id="lastUpdated" aria-describedby="lastUpdatedLabel" required [(ngModel)]="hiveSection.lastUpdated"
+        name="lastUpdated" #lastUpdated="ngModel" readonly>
+    </div>
+    <div class="btn-toolbar" role="toolbar" aria-label="Buttons">
+      <div class="btn-group mr-1" role="group" aria-label="Cancel group">
+        <button type="button" class="btn btn-default" (click)="onCancel()">Back</button>
+      </div>
+      <div class="btn-group mr-1" role="group" aria-label="Save group">
+        <button type="submit" class="btn btn-success">Save</button>
+      </div>
+      <div class="btn-group mr-1" role="group" aria-label="Delete group" *ngIf="existed && !hiveSection.isDeleted">
+        <button type="button" class="btn btn-danger" (click)="onDelete()">Delete</button>
+      </div>
+      <div class="btn-group" role="group" aria-label="Undelete and submit deletion group" *ngIf="existed && hiveSection.isDeleted">
+        <button type="button" class="btn btn-danger" (click)="onUndelete()">Undelete</button>
+        <button type="button" class="btn btn-submit" (click)="onPurge()">Purge</button>
+      </div>
+    </div>
+  </form>
+</div>
